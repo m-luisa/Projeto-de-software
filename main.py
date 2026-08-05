@@ -7,7 +7,7 @@ agora = datetime.now()
 
 loc = Localizacao(latitude=-23.55, longitude=-46.63, nome_local="Terminal")
 
-cliente_api = AviationStackClient(api_key="SUA_CHAVE_API_AQUI")
+cliente_api = AviationStackClient(api_key="chave api")
 voo = cliente_api.buscar_voo("LA3000")
 
 if not voo:
