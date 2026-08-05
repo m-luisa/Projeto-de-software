@@ -1,21 +1,46 @@
-
 from datetime import datetime, timedelta
 from core import Localizacao, VooSnapshot, OnibusSnapshot, TremSnapshot, Viagem
 from api import AviationStackClient
 
 agora = datetime.now()
 
-loc = Localizacao(latitude=-23.55, longitude=-46.63, nome_local="Terminal")
+local_terminal = Localizacao(latitude=-23.55, longitude=-46.63, nome_local="Terminal Tietê")
+L
+CHAVE_API = "67cd9cbcb038a09e2f3a0a941181599b"
+cliente = AviationStackClient(api_key=CHAVE_API)
 
-cliente_api = AviationStackClient(api_key="chave api")
-voo = cliente_api.buscar_voo("LA3000")
+voo = cliente.buscar_voo("LA3467")
 
 if not voo:
-    print("Usando voo simulado para o teste...")
-    voo = VooSnapshot("LA3000", agora, agora + timedelta(minutes=20), agora, loc) 
+    voo = VooSnapshot(
+        id_trecho="LA3467",
+        programado=agora,
+        estimado=agora + timedelta(minutes=20),
+        captura=agora,
+        localizacao=local_terminal
+    )
 
-onibus = OnibusSnapshot("BUS-100", agora + timedelta(hours=2), agora + timedelta(hours=2, minutes=5), agora, loc) 
-trem = TremSnapshot("TREM-01", agora + timedelta(hours=4), agora + timedelta(hours=4), agora, "EM_DIA")
+onibus = OnibusSnapshot(
+    id_trecho="BUS-100", 
+    programado=agora + timedelta(hours=2), 
+    estimado=agora + timedelta(hours=2, minutes=5), 
+    captura=agora, 
+    localizacao=local_terminal
+) 
 
-minha_viagem = Viagem("SP-RJ-001", [voo, onibus, trem])
+trem = TremSnapshot(
+    id_trecho="TREM-01", 
+    programado=agora + timedelta(hours=4), 
+    estimado=agora + timedelta(hours=4), 
+    captura=agora, 
+    status_operadora="EM_DIA"
+)
+
+minha_viagem = Viagem(id_viagem="SP-RJ-001", trechos=[voo, onibus, trem])
 minha_viagem.exibir_painel()
+
+print("\nTESTANDO VALIDAÇÃO DE COORDENADAS")
+try:
+    coordenada_errada = Localizacao(latitude=950.0, longitude=-46.63)
+except ValueError as erro:
+    print(f"O sistema rejeitou a coordenada inválida: {erro}")
