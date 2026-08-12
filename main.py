@@ -1,46 +1,44 @@
-from datetime import datetime, timedelta
-from core import Localizacao, VooSnapshot, OnibusSnapshot, TremSnapshot, Viagem
-from api import AviationStackClient
+from datetime import datetime
+from modelos.localizacao import Localizacao
+from modelos.retrato_horario import Retrato_horario
+from modelos.transporte import Voo, Onibus, Trem
 
-agora = datetime.now()
+retrato_voo = Retrato_horario("10:00", "10:20")
 
-local_terminal = Localizacao(latitude=-23.55, longitude=-46.63, nome_local="Terminal Tietê")
-L
-CHAVE_API = "67cd9cbcb038a09e2f3a0a941181599b"
-cliente = AviationStackClient(api_key=CHAVE_API)
+print("Horário programado:", retrato_voo.horario_programado)
+print("Horário real:", retrato_voo.horario_real)
+print("Atraso:", retrato_voo.calcular_atraso, "minutos")
 
-voo = cliente.buscar_voo("LA3467")
+retrato_voo = Retrato_horario("10:00", "10:15")
+retrato_onibus = Retrato_horario("10:30", "10:40")
+retrato_trem = Retrato_horario("11:00", "11:00")
 
-if not voo:
-    voo = VooSnapshot(
-        id_trecho="LA3467",
-        programado=agora,
-        estimado=agora + timedelta(minutes=20),
-        captura=agora,
-        localizacao=local_terminal
-    )
 
-onibus = OnibusSnapshot(
-    id_trecho="BUS-100", 
-    programado=agora + timedelta(hours=2), 
-    estimado=agora + timedelta(hours=2, minutes=5), 
-    captura=agora, 
-    localizacao=local_terminal
-) 
-
-trem = TremSnapshot(
-    id_trecho="TREM-01", 
-    programado=agora + timedelta(hours=4), 
-    estimado=agora + timedelta(hours=4), 
-    captura=agora, 
-    status_operadora="EM_DIA"
+voo = Voo(
+    "Maceió",
+    "Recife",
+    retrato_voo,
+    "Atrasado",
+    "AB123"
 )
 
-minha_viagem = Viagem(id_viagem="SP-RJ-001", trechos=[voo, onibus, trem])
-minha_viagem.exibir_painel()
+onibus = Onibus(
+    "Centro",
+    "Ponta Verde",
+    retrato_onibus,
+    "Atrasado",
+    "101"
+)
 
-print("\nTESTANDO VALIDAÇÃO DE COORDENADAS")
-try:
-    coordenada_errada = Localizacao(latitude=950.0, longitude=-46.63)
-except ValueError as erro:
-    print(f"O sistema rejeitou a coordenada inválida: {erro}")
+trem = Trem(
+    "Maceió",
+    "Lourdes",
+    retrato_trem,
+    "No horário",
+    "Linha 1"
+)
+
+
+print("Voo:", voo.calcular_atraso(), "minutos")
+print("Ônibus:", onibus.calcular_atraso(), "minutos")
+print("Trem:", trem.calcular_atraso(), "minutos")
