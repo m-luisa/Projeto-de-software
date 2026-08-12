@@ -10,7 +10,7 @@
 
 ## Menu de navegação do código
 
-**RF5 API oculta**  - Isolamento e tratamento da API externa, [`rf5_api_oculta.py`](./rf5_api_oculta.py) 
+**RF5 API oculta**  - Isolamento e tratamento da API externa, [`api-oculta.py`](./api-oculta.py) 
 
 
 **Sistema completo** Integração do painel, [`main.py`](./main.py) 
