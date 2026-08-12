@@ -1,6 +1,5 @@
 from datetime import datetime
 
-#implementação do requisito funcional de encapsulamento
 class Retrato_horario():
     def __init__(self, horario_programado, horario_real):
         self.__horario_programado = datetime.strptime(horario_programado,"%H:%M")
@@ -12,8 +11,8 @@ class Retrato_horario():
     @property
     def horario_real(self):
         return self.__horario_real
-    @property
-    def calcular_atraso(self):
-        atraso = self.__horario_real - self.__horario_programado
-
-        return atraso.total_seconds() / 60
+    
+    #mudei calcular_atraso para calcular_diferenca pq esse nome fica mais claro o que o método de fato faz e criei em transportes.py o metodo que de fato vai calcular o atraso com base na diferença de horarios
+    def calcular_diferenca(self): 
+        diferenca = self.__horario_real - self.__horario_programado
+        return diferenca.total_seconds() / 60

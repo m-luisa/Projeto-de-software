@@ -1,30 +1,91 @@
-
-"""implementação do requisito fucional de herança"""
 class Transporte:
-    def __init__(self, origem, destino, retrato_horario, status):
+    def __init__(self, origem, destino, retrato_horario):
         self.origem = origem
         self.destino = destino
         self.retrato_horario = retrato_horario
-        self.status = status
 
+    def calcular_diferenca(self):
+        return self.retrato_horario.calcular_diferenca()
+
+    #RF4 - polimorfismo
     def calcular_atraso(self):
-        return self.retrato_horario.calcular_atraso
-    
+        raise NotImplementedError
+
+    def exibir_status(self):
+        raise NotImplementedError
+
 
 class Voo(Transporte):
-    def __init__(self, origem, destino, retrato_horario, status, numero_voo):
-        super().__init__(origem, destino, retrato_horario, status)
-
+    def __init__(self, origem, destino, retrato_horario, numero_voo):
+        super().__init__(origem, destino, retrato_horario)
         self.numero_voo = numero_voo
 
-class Onibus(Transporte):
-    def __init__(self, origem, destino, retrato_horario, status, linha_onibus):
-        super().__init__(origem, destino, retrato_horario, status)
+    def calcular_atraso(self):
+        diferenca = self.calcular_diferenca()
 
+        if diferenca <= 15:
+            return 0
+
+        return diferenca
+
+    def exibir_status(self):
+        atraso = self.calcular_atraso()
+        horario = self.retrato_horario.horario_real.strftime("%H:%M")
+
+        if atraso == 0:
+            status = "No horário"
+        else:
+            status = f"Atrasado em {int(atraso)} minutos"
+
+        return f"Voo {self.numero_voo} -> {horario} {status}"
+
+
+class Onibus(Transporte):
+    def __init__(self, origem, destino, retrato_horario, linha_onibus):
+        super().__init__(origem, destino, retrato_horario)
         self.linha_onibus = linha_onibus
 
+    def calcular_atraso(self):
+        diferenca = self.calcular_diferenca()
+
+        if diferenca <= 10:
+            return 0
+
+        return diferenca
+
+    def exibir_status(self):
+        atraso = self.calcular_atraso()
+        horario = self.retrato_horario.horario_real.strftime("%H:%M")
+
+        if atraso == 0:
+            status = "No horário"
+        else:
+            status = f"Atrasado em {int(atraso)} minutos"
+
+        return f"Ônibus {self.linha_onibus} -> {horario} {status}"
+
+
 class Trem(Transporte):
-    def __init__(self, origem, destino, retrato_horario, status, linha_trem):
-        super().__init__(origem, destino, retrato_horario, status)
-        
+    def __init__(self, origem, destino, retrato_horario, linha_trem):
+        super().__init__(origem, destino, retrato_horario)
         self.linha_trem = linha_trem
+
+    def calcular_atraso(self):
+        diferenca = self.calcular_diferenca()
+
+        #regra provisoria para trem enquanto a regra definitiva de definir atraso com base na operadora nao é implementada
+        if diferenca <= 5:
+            return 0
+
+        return diferenca
+
+    def exibir_status(self):
+        atraso = self.calcular_atraso()
+        horario = self.retrato_horario.horario_real.strftime("%H:%M")
+
+        if atraso == 0:
+            status = "No horário"
+        else:
+            status = f"Atrasado em {int(atraso)} minutos"
+
+        return f"Trem {self.linha_trem} -> {horario} {status}"
