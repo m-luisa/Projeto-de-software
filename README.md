@@ -1,6 +1,6 @@
 # Painel de status de transportes 
 
-> Trabalho prático da disciplina de **Programação Orientada a Objetos** lecionada pelo professor Baldoíno Fonseca
+> Trabalho prático da disciplina de **Projeto de Software** lecionada pelo professor Baldoíno Fonseca
 
 > Instituto de Computação (IC) — Universidade Federal de Alagoas (UFAL)
 
@@ -9,7 +9,7 @@
 ---
 
 ## Descrição do projeto
-O projeto implementa um **sistema de monitoramento de meio de transportes** em Python, baseado nos princípios estudados na disciplina de **Programação Orientada a Objetos (POO)**:
+O projeto implementa um **sistema de monitoramento de meio de transportes** em Python, baseado nos princípios estudados na disciplina de **Projeto de Software**:
 
 - **Abstração e herança** : atribuímos a classe base abstrata para padronização dos modais;
 - **Polimorfismo**: tratamento, de modo igual, os diferentes transportes analisados (voos, ônibus e trens);
