@@ -10,9 +10,10 @@
 
 ## Menu de navegação do código
 
-| **RF5 - API Oculta** | Isolamento e tratamento da API externa (AviationStack) | [`rf5_api_oculta.py`](./rf5_api_oculta.py) |
+**RF5 API oculta**  - Isolamento e tratamento da API externa, [`rf5_api_oculta.py`](./rf5_api_oculta.py) 
 
-| **Sistema Completo** | Execução unificada e integração do painel | [`main.py`](./main.py) |
+
+**Sistema completo** Integração do painel, [`main.py`](./main.py) 
 
 ---
 
