@@ -12,6 +12,19 @@ class Voo: #nn sabemos da JSON e nem da API
         hora_formatada = self.horario_estimado.strftime("%H:%M")
         return f"[VOO {self.codigo}] {self.origem} -> {self.destino} - Horário estimado: {hora_formatada}"
     
+class Onibus:
+    def __init__(self, identificador: str, linha: str, origem: str, destino: str, horario_estimado: datetime):
+        self.identificador = identificador
+        self.linha = linha
+        self.origem = origem
+        self.destino = destino
+        self.horario_estimado = horario_estimado
+
+    def __str__(self) -> str:
+        horario = self.horario_estimado.strftime("%H:%M")
+        return f"[ÔNIBUS linha {self.linha}] ID: {self.identificador} {self.origem} -> {self.destino} - Horário: {horario}"
+
+
 # vms ver a criação da camada da api oculta -> a gnt vai encapsular tudo e navegar pelo dicionario associado a api oculta e vms criar uma classe q vai saber lidar c o dicionário da api externa
 
 class AviationStackService: # nome da api, p facilitar
