@@ -1,10 +1,17 @@
 # Painel de status de transportes 
 
 > Trabalho prático da disciplina de **Projeto de Software** lecionada pelo professor Baldoíno Fonseca
-
+> 
 > Instituto de Computação (IC) — Universidade Federal de Alagoas (UFAL)
-
+> 
 > Grupo 5: Ana Carolina Cavalcante de Jesus, Julia Cabral Melo e Maria Luísa Silva Nunes de Souza
+
+---
+
+## Menu de navegação do código
+
+| **RF5 - API Oculta** | Isolamento e tratamento da API externa (AviationStack) | [`rf5_api_oculta.py`](./rf5_api_oculta.py) |
+| **Sistema Completo** | Execução unificada e integração do painel | [`main.py`](./main.py) |
 
 ---
 
@@ -19,11 +26,13 @@ O objetivo do nosso projeto é montar um sistema seguro de gerência de veículo
 
 ---
 
+## Diagrama de classes (UML)
+
+<img width="8192" height="3493" alt="Modal Transporte Status Flow-2026-08-05-151853" src="https://github.com/user-attachments/assets/8cf2a10e-1372-4e96-bac7-3cfe16185dfa" /> 
+
 ## Para compilar e executar o código
-python3 main.py (Linux/MacOS)
+Para rodar o sistema completo:
+```bash
+python3 main.py
 
-python3 main.py (Windows)
 
-# Diagrama de classes (UML)
-
-<img width="8192" height="3493" alt="Modal Transporte Status Flow-2026-08-05-151853" src="https://github.com/user-attachments/assets/8cf2a10e-1372-4e96-bac7-3cfe16185dfa" />
