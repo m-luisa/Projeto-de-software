@@ -30,7 +30,8 @@ O objetivo do nosso projeto é montar um sistema seguro de gerência de veículo
 
 ## Diagrama de classes (UML)
 
-<img width="8192" height="3493" alt="Modal Transporte Status Flow-2026-08-05-151853" src="https://github.com/user-attachments/assets/8cf2a10e-1372-4e96-bac7-3cfe16185dfa" /> 
+<img width="8192" height="2404" alt="Modal Transporte Status Flow-2026-08-18-190556" src="https://github.com/user-attachments/assets/54c08a09-3d70-4018-a816-6342c0036ff4" />
+
 
 ## Para compilar e executar o código
 Para rodar o sistema completo:
