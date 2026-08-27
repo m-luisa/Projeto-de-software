@@ -41,9 +41,10 @@ class Voo(Transporte):
 
 
 class Onibus(Transporte):
-    def __init__(self, origem, destino, retrato_horario, linha_onibus):
+    def __init__(self, origem, destino, retrato_horario, linha_onibus, posicao_onibus):
         super().__init__(origem, destino, retrato_horario)
         self.linha_onibus = linha_onibus
+        self.posicao_onibus = posicao_onibus
 
     def calcular_atraso(self):
         diferenca = self.calcular_diferenca()
@@ -66,9 +67,10 @@ class Onibus(Transporte):
 
 
 class Trem(Transporte):
-    def __init__(self, origem, destino, retrato_horario, linha_trem):
+    def __init__(self, origem, destino, retrato_horario, linha_trem, posicao_trem):
         super().__init__(origem, destino, retrato_horario)
         self.linha_trem = linha_trem
+        self.posicao_trem = posicao_trem
 
     def calcular_atraso(self):
         diferenca = self.calcular_diferenca()
