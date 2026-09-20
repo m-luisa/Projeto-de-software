@@ -32,3 +32,19 @@ class AviationStack:
             return dados["data"][0]
         except KeyError as erro:
             raise KeyError(f"Resposta da AviationStack em formato inesperado: {erro}") from error
+    def buscar_voos(self, dep_iata: str = None, quantidade: int = 10) -> list[dict]:
+        
+        paramd = {"access_key": self.__api_key, "limit": quantidade}
+        if dep_iata:
+            paramd["dep_iata"] = dep_iata
+        try:
+            resposta = requests.get(self.URL, params=paramd, timeout=10)
+            resposta.raise_for_status()
+            dados = resposta.json()
+        except requests.RequestsException as erro:
+            raise requests.RequestException(f"Resposta de AviationStack é um JSON inválido: {erro}") from erro
+
+        try:
+            return dados["data"] or []
+        except KeyError as erro:
+            raise KeyError(f"Resposta da AviationStack em formato inesperado: {erro}") from error
