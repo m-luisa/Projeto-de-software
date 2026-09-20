@@ -1,5 +1,9 @@
 from datetime import datetime
-# não sabemos do JSON e nem da API
+#rf7 - dados incompletos da api
+class DadosIncompletosError(ValueError):
+    pass
+
+#não sabemos do JSON e nem da API
 class Voo: 
     def __init__(self, codigo: str, origem: str, destino: str, horario_estimado: datetime):
         self.codigo = codigo
