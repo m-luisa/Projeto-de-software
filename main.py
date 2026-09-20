@@ -1,4 +1,3 @@
-from api_oculta import DadosIncompletosError
 from modelos.registro_transportes import RegistroTransportes
 import requests
 import logging 
@@ -27,7 +26,6 @@ def buscar_voo(dep_iata: str = None, quantidade: int = 10):
 
     try:
         cliente_voo = AviationStack()
-        lista_json = cliente_voo.buscar_voos(dep_iata=dep_iata, quantidade=quantidade)
         lista_json = cliente_voo.buscar_voos(dep_iata=dep_iata, quantidade=quantidade)
 
     except (requests.RequestException, KeyError) as erro:
@@ -124,8 +122,8 @@ def registrar_no_painel(transporte, nome: str):
     #rf9 p registrar o transporte no painel e avisar se for uma busca duplicada
     if transporte is None:
         return
-        #aqui poderia ter um if para identificar que vai ser um adicionado um novo onibus no painel, mas o terminal ficou mt poluido com essasa adicoes
-        
+    #aqui poderia ter um if para identificar que vai ser um adicionado um novo onibus no painel, mas o terminal ficou mt poluido com essasa adicoes
+    painel.registrar(transporte)
     notificador.notificar_atraso(transporte)  #rf10 avisa se tiver atraso
 
 def exibir_menu():
