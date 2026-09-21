@@ -174,7 +174,7 @@ def exibir_menu():
     print("\n Painel de status de transportes")
     print("1 - Ver status de todos os voos;")
     print("2 - Ver status de todos os ônibus;")
-    print("3 - Ver status de todos os trens;")
+    print("3 - Ver status de todos os trem;")
     print("4 - Ver painel completo (voos + ônibus + trens);")
     print("5 - Ver viagem com múltiplos trechos (voo + ônibus + trem);")
     print("6 - Buscar de novo e comparar;")

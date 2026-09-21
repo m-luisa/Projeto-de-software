@@ -102,7 +102,9 @@ class Trem(Transporte):
         return 0 if self.operacao_normal else 1
 
     def exibir_status(self):
-        return f"Trem {self.linha_trem} -> {self.origem} → {self.destino}: {self.status_operadora}"
+        horario = self.retrato_horario.horario_real.strftime("%H:%M")
+        status = "No horário" if self.operacao_normal else f"Atrasado ({self.status_operadora})"
+        return f"Trem {self.linha_trem} ({self.origem} -> {self.destino}) -> {horario} {status}"
 
     def identificador_unico(self):
         return self.identificador
