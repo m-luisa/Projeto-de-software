@@ -53,7 +53,8 @@ class Voo(Transporte):
             status = "No horário"  
         else:
             status = f"Atrasado em {int(atraso)} minutos"
-        return f"Voo {self.numero_voo} -> {horario} {status}"
+        return f"Voo {self.numero_voo} ({self.origem} -> {self.destino}) -> {horario} {status}"
+ 
 
     def identificador_unico(self):
         return self.numero_voo   
