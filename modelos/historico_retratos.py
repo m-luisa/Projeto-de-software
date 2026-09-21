@@ -1,12 +1,19 @@
 from modelos import retrato_horario
+"""
+rf2 - historico de retratos
 
+cada busca gera um novo retrato_horario (que é imutavel) e esse historico vai acumular esses restratos numa lista por transporte, sem sobrescrever nem alterar o retrato ja registrado
+vai ser usado para possibilitar comparar o que mudou entre os retratos
+"""
 class HistoricoRetratos:
     def __init__(self):
-        self._retratos = {} #dicionario vazio
+        self._retratos = {} #lista de retratos - id_transporte
 
-    def registrar(self, id_transporte: str, retrato): #adiciona um retrato novo na pasta certi
+    def registrar(self, id_transporte: str, retrato): 
+        #rf2: so adiciona o novo retrato ao final da lista
         self._retratos.setdefault(id_transporte, []).append(retrato)
     def ultimo(self, id_transporte:str):
+        #tratamento de erro
         try:
             return self._retratos[id_transporte][-1]
         except KeyError as erro:
@@ -19,6 +26,7 @@ class HistoricoRetratos:
         return lista[-2] if len(lista) >= 2 else None
 
     def mudou(self, id_transporte:str) -> str:
+        #rf2 - compara dois retratos distintos e imultaveis, o penultimo e o ultimo para relatar o que mudou entre as buscas
         anterior = self.penultimo(id_transporte)
         if anterior is None:
             return " Nada a comparar ainda"

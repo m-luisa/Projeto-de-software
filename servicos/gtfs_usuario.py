@@ -7,13 +7,16 @@ import requests
 from google.transit import gtfs_realtime_pb2
 from google.protobuf.message import DecodeError #biblioteca para quando o programa tenta ler uma mensagem em binario corrompida
 
-
+"""
+rf5 - cliente do feed gtfs-realtime
+Essa classe é o ponto do sistema que entende a lingua binaria do gtfs, vai devolver o dicionario simples ou objetos localizacao validados
+"""
 class GtfsUsuario:
     def __init__(self, feed_url: str):
         self.feed_url = feed_url
     
-    #tratamento de erro quando o feed do gtfs corrompido nao é tratado
     def _buscar_feed(self) -> gtfs_realtime_pb2.FeedMessage:
+    #tratamento de erro quando o feed do gtfs corrompido nao é tratado
         try:
             resposta = requests.get(self.feed_url, timeout=10)
             resposta.raise_for_status()
@@ -42,16 +45,14 @@ class GtfsUsuario:
         timestamp_feed = feed.header.timestamp if feed.header.HasField("timestamp") else None
 
         def _evento(stu_evento, tem_campo):
-            #extrai {"time":..., "delay":...} de um StopTimeEvent do GTFS-realtime.
-            #'delay' (em segundos) é o próprio atraso informado pela operadora.
+            #extrai ("time","delay") de um StopTimeEvent do gtfs-realtime.'delay' (em segundos) é o próprio atraso informado pela operadora
             if not tem_campo:
                 return None
 
             tem_time = stu_evento.HasField("time") and stu_evento.time != 0
             tem_delay = stu_evento.HasField("delay")
 
-            #RF7: sem 'time' válido E sem 'delay', não há como saber o
-            #horário de jeito nenhum — dado incompleto, descartado aqui.
+            #rf7: sem 'time' válido e sem 'delay', não há como saber o horário, então é um dado incompleto
             if not tem_time and not (tem_delay and timestamp_feed):
                 return None
 
@@ -62,9 +63,7 @@ class GtfsUsuario:
                     "delay": stu_evento.delay if tem_delay else None,
                 }
 
-            #sem 'time', mas com 'delay': usa o timestamp do feed como
-            #horário real observado, e o delay é usado depois (em
-            #api_oculta.py) pra derivar o horário programado.
+            #rf7 - sem time, mas com 'delay' usa o timestamp do feed como horário real e o delay é usado depois em api_oculta.py pra derivar o horário programado.
             return {
                 "time": timestamp_feed,
                 "delay": stu_evento.delay,
