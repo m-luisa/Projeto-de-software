@@ -92,13 +92,14 @@ class Trem(Transporte):
         super().__init__(origem, destino, retrato_horario)
         self.linha_trem = linha_trem
         self.status_operadora = status_operadora
+        self.operacao_normal = operacao_normal
         if identificador is not None:
             self.identificador = identificador 
         else:
             self.identificador = linha_trem
 
     def calcular_atraso(self):
-        return 0 if self.status_operadora == "no horário" else 1
+        return 0 if self.operacao_normal else 1
 
     def exibir_status(self):
         return f"Trem {self.linha_trem} -> {self.origem} → {self.destino}: {self.status_operadora}"

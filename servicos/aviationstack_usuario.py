@@ -39,7 +39,7 @@ class AviationStack:
                 raise ValueError(f"Voo {iata_code} não encontrado")
             return dados["data"][0]
         except KeyError as erro:
-            raise KeyError(f"Resposta da AviationStack em formato inesperado: {erro}") from error
+            raise KeyError(f"Resposta da AviationStack em formato inesperado: {erro}") from erro
 
     def buscar_voos(self, dep_iata: str = None, quantidade: int = 10) -> list[dict]:
     #rf5 - devolve uma lista de dicionarios ainda no formato da aviationstack, a api_oculta quem vai transformar cada um em um objeto de dominio voo
@@ -50,10 +50,10 @@ class AviationStack:
             resposta = requests.get(self.URL, params=paramd, timeout=10)
             resposta.raise_for_status()
             dados = resposta.json()
-        except requests.RequestsException as erro:
+        except requests.RequestException as erro:
             raise requests.RequestException(f"Resposta de AviationStack é um JSON inválido: {erro}") from erro
 
         try:
             return dados["data"] or []
         except KeyError as erro:
-            raise KeyError(f"Resposta da AviationStack em formato inesperado: {erro}") from error
+            raise KeyError(f"Resposta da AviationStack em formato inesperado: {erro}") from erro
