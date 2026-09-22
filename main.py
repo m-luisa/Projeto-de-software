@@ -42,7 +42,7 @@ def buscar_voo(dep_iata: str = None, quantidade: int = 10):
         lista_json = cliente_voo.buscar_voos(dep_iata=dep_iata, quantidade=quantidade)
 
     except (requests.RequestException, KeyError) as erro:
-        print("Não foi possível buscar voos: {erro}")
+        print(f"Não foi possível buscar voos: {erro}")
         return voos_dominio
     for json_voo  in lista_json:
         try:
