@@ -66,32 +66,22 @@ classDiagram
         +origem
         +destino
         +retrato_horario
-        +calcular_diferenca()
-        +calcular_atraso()* 
+        +calcular_atraso()*
         +exibir_status()*
         +identificador_unico()*
-        +chave_identificacao() str
+        +chave_identificacao()
     }
     class Voo {
         +numero_voo
-        +calcular_atraso()
-        +exibir_status()
-        +identificador_unico()
     }
     class Onibus {
         +linha_onibus
         +identificador
-        +calcular_atraso()
-        +exibir_status()
-        +identificador_unico()
     }
     class Trem {
         +linha_trem
         +status_operadora
-        +identificador
-        +calcular_atraso()
-        +exibir_status()
-        +identificador_unico()
+        +operacao_normal
     }
     Transporte <|-- Voo
     Transporte <|-- Onibus
@@ -100,42 +90,43 @@ classDiagram
     class Retrato_horario {
         -horario_programado
         -horario_real
-        +calcular_diferenca() float
+        +calcular_diferenca()
     }
-    Transporte "1" --> "1" Retrato_horario
+    Transporte "1" *-- "1" Retrato_horario
 
     class Localizacao {
         -latitude
         -longitude
     }
-
-    class Viagem {
-        +trechos: list
-        +atraso_total() float
-        +exibir_status() str
+    class GtfsUsuario {
+        +buscar_posicoes()
     }
-    Viagem "1" --> "*" Transporte
-
-    class HistoricoRetratos {
-        -_retratos: dict
-        +registrar(id, retrato)
-        +ultimo(id)
-        +penultimo(id)
-        +mudou(id) str
-    }
-    HistoricoRetratos "1" --> "*" Retrato_horario
+    GtfsUsuario ..> Localizacao : cria
 
     class RegistroTransportes {
-        -_registros: dict
-        +registrar(transporte) bool
-        +listar() list
-        +quantidade() int
+        -_registros
+        +registrar(transporte)
+        +listar()
     }
-    RegistroTransportes "1" --> "*" Transporte
+    RegistroTransportes o-- "*" Transporte
+
+    class HistoricoRetratos {
+        -_retratos
+        +registrar(id, retrato)
+        +mudou(id)
+    }
+    HistoricoRetratos o-- "*" Retrato_horario
+
+    class Viagem {
+        -trechos
+        +atraso_total()
+        +exibir_status()
+    }
+    Viagem o-- "*" Transporte
 
     class CanalNotificacao {
         <<abstract>>
-        +enviar(destinatario, mensagem)*
+        +enviar(destinatario, msg)*
     }
     class CanalEmail
     class CanalPush
@@ -143,28 +134,49 @@ classDiagram
     CanalNotificacao <|-- CanalPush
 
     class UsuarioInscrito {
-        +nome: str
-        +inscricoes: list
+        +nome
+        +inscricoes
     }
-    UsuarioInscrito "1" --> "*" CanalNotificacao
+    UsuarioInscrito o-- "*" CanalNotificacao
 
     class Notificador {
-        -_inscritos: list
+        -_inscritos
         +inscrever(usuario)
         +notificar_atraso(transporte)
     }
-    Notificador "1" --> "*" UsuarioInscrito
-    Notificador ..> Transporte : calcula atraso
+    Notificador o-- "*" UsuarioInscrito
+    Notificador ..> Transporte : usa
+
+    class DadosIncompletosError {
+        <<exception>>
+    }
 
     class AviationStackService {
-        <<service>>
-        +criar_voo_json(json) Voo
+        +criar_voo_json(json)$
     }
     class GtfsService {
-        <<service>>
-        +criar_onibus_gtfs(json) Onibus
-        +criar_trem_gtfs(json) Trem
+        +criar_onibus_gtfs(json)$
     }
+    class MetroSPService {
+        +criar_trens_json(lista)$
+    }
+    AviationStackService ..> DadosIncompletosError
+    GtfsService ..> DadosIncompletosError
+
+    class AviationStack {
+        +buscar_voos()
+    }
+    class MetroSPScraper {
+        +buscar_status()
+    }
+
+    AviationStack ..> AviationStackService : json bruto
+    GtfsUsuario ..> GtfsService : json bruto
+    MetroSPScraper ..> MetroSPService : html bruto
+
+    AviationStackService ..> Voo : monta
+    GtfsService ..> Onibus : monta
+    MetroSPService ..> Trem : monta
 ```
 </details>
 
