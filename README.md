@@ -177,12 +177,11 @@ classDiagram
     AviationStackService ..> Voo : monta
     GtfsService ..> Onibus : monta
     MetroSPService ..> Trem : monta
-```
 </details>
 
 ## Estrutura do repositório
 
-```text
+text
 Projeto-de-software/
 ├── main.py                    # Ponto de entrada — orquestra tudo (menu, cadastro, painel)
 ├── api_oculta.py               # RF5 — isola e traduz o JSON "cru" das APIs em objetos
@@ -207,7 +206,6 @@ Projeto-de-software/
     ├── notificador.py            # RF10 — dispara notificações de atraso
     ├── painel.py                 # Monta um painel consolidado (voos + ônibus/trens)
     └── status.py                 # (reservado)
-```
 
 ## Requisitos funcionais implementados
 
