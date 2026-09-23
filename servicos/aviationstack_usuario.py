@@ -15,7 +15,7 @@ class AviationStack:
     URL = "http://api.aviationstack.com/v1/flights"
     
     def __init__(self, api_key: str = None):
-        #encapsulamento: a chave da api é guardada em atributo privado, inassecível fora da classe
+        #encapsulamento: a chave da api é guardada em atributo privado, inacessível fora da classe
         try:#tratamento de erro
             self.__api_key = api_key or os.environ["AVIATIONSTACK_KEY"]
         except KeyError as erro:

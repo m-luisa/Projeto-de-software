@@ -34,10 +34,7 @@ def montar_onibus_dominio(onibus_api) -> OnibusDominio:
 
 def montar_trem_dominio(trem_api) -> TremDominio:
     try:
-        #RF2 - a api Trilhos não informa um horário programado por viagem
-        #(só o status da linha), então o retrato registra o momento da
-        #consulta; a cada nova busca um retrato novo e imutável é criado,
-        #o que já basta pra comparar "o que mudou desde então?" (histórico)
+        #rf2 - a api trilhos não informa um horário programado por viagem (só o status da linha), então o retrato registra o momento da consulta; a cada nova busca um retrato novo e imutável é criado, o que já basta pra comparar "o que mudou desde então?" 
         momento_str = trem_api.atualizado_em.strftime("%H:%M")
         retrato = Retrato_horario(momento_str, momento_str)
     except (ValueError, AttributeError) as erro:
