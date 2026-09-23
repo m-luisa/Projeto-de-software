@@ -63,6 +63,8 @@ class AviationStackService:
     def criar_voo_json(json_sem_tratar: dict) -> Voo:
         try:
             codigo_voo = json_sem_tratar["flight"]["iata"] 
+            if not codigo_voo:
+                raise DadosIncompletosError("Voo sem código IATA informado")
             aero_origem = json_sem_tratar["departure"]["airport"] 
             aero_destino = json_sem_tratar["arrival"]["airport"] 
             info_partida = json_sem_tratar["departure"]
