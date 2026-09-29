@@ -11,7 +11,7 @@ rf5: reconhece o formato de resposta de aviationstack e do feed gtfs-realtime, v
 class DadosIncompletosError(ValueError):
     pass
 
-#estruturaa de dominio cruas dessa camada - ainda nao sao objetos finais, mas ja escondem o json
+#estrutura de dominio cruas dessa camada - ainda nao sao objetos finais, mas ja escondem o json
 class Voo: 
     def __init__(self, codigo: str, origem: str, destino: str, horario_programado: datetime, horario_estimado: datetime):
         self.codigo = codigo

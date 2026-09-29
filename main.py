@@ -56,7 +56,7 @@ def buscar_voo(dep_iata: str = None, quantidade: int = 10):
             voos_dominio.append(voo_dominio)
         except DadosIncompletosError as erro:
             #rf7 - voo com dados incompletos nao entram na lista
-            logging.warning(str(erro))
+            logging.warning(f"RF7: api de voo retornou dados incompletos, ({erro})")
             continue
         except (ValueError, KeyError) as erro:
             logging.warning(f"Erro de formato: {erro}")
@@ -92,7 +92,7 @@ def buscar_onibus(quantidade: int = LIMITE_ONIBUS):
             onibus_dominio_lista.append(onibus_dominio)
         #rf7 - descarta onibus com dados incompletos
         except DadosIncompletosError as erro:
-            logging.warning(str(erro))
+            logging.warning(f" RF7: Api de ônibus retornou dados incompletos, ({erro})")
             continue
         except (ValueError, KeyError) as erro:
             logging.warning(f"Erro de formato: {erro}")
@@ -158,8 +158,7 @@ def cadastrar_usuario() -> UsuarioInscrito:
         inscricoes.append((CanalEmail(), email))
 
     if escolha in ("2", "3"):
-        # o tópico funciona como "senha": quem souber o nome consegue ler as notificações,
-        # por isso geramos um nome difícil de adivinhar
+        # o tópico funciona como "senha": quem souber o nome consegue ler as notificações, por isso geramos um nome difícil de adivinhar
         topico = f"painel-transporte-{secrets.token_hex(4)}"
         print(f"\nInstale o app 'ntfy' no celular e assine o tópico: {topico}")
         input("Quando terminar de assinar, aperte Enter... ")
@@ -174,7 +173,7 @@ def registrar_no_painel(transporte, nome: str):
         return
     #para demonstrar funcionamento da rf9, o painel fica mais poluido mas avisa em caso de duplicação de transporte
     #se quiser retirar basta retirar o if e so chamar painel.registrar
-    era_novo = painel.registrar(transporte)  #rf9 - registrar devolve False se o transporte já estava no painel
+    era_novo = painel.registrar(transporte)  #rf9 - registrar devolve false se o transporte já estava no painel
     if not era_novo:
         print(f"[AVISO] {nome} {transporte.identificador_unico()} já estava no painel, não foi adicionado de novo (dados atualizados).")
     notificador.notificar_atraso(transporte)  #rf10 avisa se tiver atraso
