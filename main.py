@@ -34,7 +34,7 @@ notificador = Notificador() #rf10 - usuario se inscrever
 
 
 def buscar_voo(dep_iata: str = None, quantidade: int = 10):
-    #rf5 - passa por aviationstack + viationstackservice + montar_voo_dominio 
+    #rf5 - passa por aviationstack + aviationstackservice + montar_voo_dominio 
     voos_dominio = []
 
     #rf8 disponibilidade parcial, se a propria api falhar retorna lista vazia
@@ -63,10 +63,10 @@ def buscar_voo(dep_iata: str = None, quantidade: int = 10):
             continue
     return voos_dominio
     
+LIMITE_ONIBUS = 20
 
-def buscar_onibus():
+def buscar_onibus(quantidade: int = LIMITE_ONIBUS):
     onibus_dominio_lista = []
-
     #rf8 - falha ao buscar o feed gtfs nao impede o painel de funcionar
     try:
         cliente_onibus = GtfsUsuario(
@@ -80,6 +80,8 @@ def buscar_onibus():
 
     #rf5 - cada atualização crua do gtfs passa por gtfsservice
     for a in atualizacoes:
+        if len(onibus_dominio_lista) >= quantidade:
+            break
         try:
             onibus_api = GtfsService.criar_onibus_gtfs(a)
             onibus_dominio = montar_onibus_dominio(onibus_api)
