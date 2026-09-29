@@ -13,6 +13,7 @@ from modelos.registro_transportes import RegistroTransportes #rf9
 from modelos.canal_notificacao import CanalEmail, CanalPush  # rf10
 from modelos.usuario import UsuarioInscrito
 from servicos.notificador import Notificador
+import secrets  # gera o nome aleatório do tópico do push (ntfy)
 
 """
 main.py vai integrar os requisitos funcionais 
@@ -73,7 +74,8 @@ def buscar_onibus():
         )
         atualizacoes = cliente_onibus.buscar_atualizacoes()
     except (requests.RequestException, KeyError) as erro:
-        print("Não foi possível buscar onibus: {erro}")
+        # não imprimimos o erro cru porque a mensagem pode trazer a URL com a chave da API
+        print("Não foi possível buscar os ônibus agora.")
         return onibus_dominio_lista
 
     #rf5 - cada atualização crua do gtfs passa por gtfsservice
@@ -140,7 +142,7 @@ def cadastrar_usuario() -> UsuarioInscrito:
 
     print("Canais disponíveis:")
     print("  1 - E-mail")
-    print("  2 - Push")
+    print("  2 - Push (app ntfy no celular)")
     print("  3 - E-mail e Push")
     escolha = input("Escolha o(s) canal(is) [1/2/3]: ").strip()
     while escolha not in ("1", "2", "3"):
@@ -154,11 +156,13 @@ def cadastrar_usuario() -> UsuarioInscrito:
         inscricoes.append((CanalEmail(), email))
 
     if escolha in ("2", "3"):
-        telefone = input("Seu telefone: ").strip()
-        while not telefone:
-            telefone = input("Telefone não pode ficar vazio: ").strip()
+        # o tópico funciona como "senha": quem souber o nome consegue ler as notificações,
+        # por isso geramos um nome difícil de adivinhar
+        topico = f"painel-transporte-{secrets.token_hex(4)}"
+        print(f"\nInstale o app 'ntfy' no celular e assine o tópico: {topico}")
+        input("Quando terminar de assinar, aperte Enter... ")
 
-        inscricoes.append((CanalPush(), telefone))
+        inscricoes.append((CanalPush(), topico))
 
     return UsuarioInscrito(nome, inscricoes)
 
@@ -187,6 +191,10 @@ def main():
     canais_nomes = ", ".join(type(c).__name__.replace("Canal", "") for c, _ in usuario.inscricoes)
     print(f"\n{usuario.nome} inscrito para receber notificações por: {canais_nomes}\n")
 
+    # rf10 - confirmação de cadastro: cada canal (E-mail, Push) envia do seu jeito
+    for canal, destino in usuario.inscricoes:
+        canal.enviar(destino, f"Olá, {usuario.nome}! Você foi inscrito para receber avisos de atraso.")
+
     voos = buscar_voo()
     for v in voos:
         registrar_no_painel(v, "Voo")
@@ -196,6 +204,8 @@ def main():
     trens_lista = buscar_trens()
     for t in trens_lista:
         registrar_no_painel(t, "Trem")
+
+    notificador.enviar_pendentes()  # rf10 - envia os avisos de atraso acumulados
 
     while True:
         exibir_menu()
@@ -252,6 +262,8 @@ def main():
             trens_lista = buscar_trens()
             for t in trens_lista:
                 registrar_no_painel(t, "Trem")
+
+            notificador.enviar_pendentes()  # rf10 - só envia se surgiu atraso novo
 
             for v in voos:
                 print(f"Voo {v.id_transporte}:", historico.mudou(v.id_transporte))
