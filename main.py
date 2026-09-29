@@ -172,8 +172,11 @@ def registrar_no_painel(transporte, nome: str):
     #rf9 - registra o transporte no painel e avisar se for uma busca duplicada
     if transporte is None:
         return
-    #observação - aqui poderia ter um if para identificar que vai ser um adicionado um novo onibus no painel, mas o terminal ficaria muito poluido com esses avisos repetitivos de adição
-    painel.registrar(transporte)
+    #para demonstrar funcionamento da rf9, o painel fica mais poluido mas avisa em caso de duplicação de transporte
+    #se quiser retirar basta retirar o if e so chamar painel.registrar
+    era_novo = painel.registrar(transporte)  #rf9 - registrar devolve False se o transporte já estava no painel
+    if not era_novo:
+        print(f"[AVISO] {nome} {transporte.identificador_unico()} já estava no painel, não foi adicionado de novo (dados atualizados).")
     notificador.notificar_atraso(transporte)  #rf10 avisa se tiver atraso
 
 def exibir_menu():
